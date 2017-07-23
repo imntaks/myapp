@@ -1,12 +1,11 @@
 <template>
   
   <div id="app" class="container">
-  <SourceSelection v-on:sourceChanged="sourceChanged"> </SourceSelection>
-    <Newslist v-bind:source="source"></Newslist>
+  <SourceSelection v-on:sourceChanged="sourceChanged"></SourceSelection>
+    <Newslist v-bind:source="source" v-if="source !=''"></Newslist>
+    <div class="page-header">
 
-   <div class="page-header">
-
-      <h1> Vue.js 2 & Firebase Sample Application</h1>
+      <h1> Vue.js 2 and Firebase Sample Application</h1>
     </div>
 
      <div class="panel panel-default">
@@ -41,17 +40,8 @@
 
         </div>
       </div>  
-
-
-
-
-
-
-
-
      <div class="panel panel-default">
        <div class="panel-heading">
-
             <h3> Books Lists</h3>
         </div>
         <div class="panel-body">
@@ -89,17 +79,11 @@
 
 <script>
 import Hello from './components/Hello'
-
 import SourceSelection from './components/SourceSelection'
-
 import Newslist from './components/Newslist'
-
 import Firebase from 'firebase'
-
 import toastr from 'toastr'
-
 let config={
-  
     apiKey: "AIzaSyCGeZPv6iGp-Bgh9gmv0BJ8PAsOPmO84u8",
     authDomain: "vuejs-firebase-33d24.firebaseapp.com",
     databaseURL: "https://vuejs-firebase-33d24.firebaseio.com",
@@ -107,37 +91,36 @@ let config={
     storageBucket: "vuejs-firebase-33d24.appspot.com",
     messagingSenderId: "758014411725"
 }
-
-let app =Firebase.initializeApp(config);
-
-let db =app.database();
-let bookRef=db.ref('books');
+// if (!Firebase.apps.length) {
+//     let app = ;
+// }
+    let app = !Firebase.apps.length ? Firebase.initializeApp(config) : Firebase.apps[0]
+    let db = app.database();
+    let bookRef = db.ref('books');
 
 
 export default {
   name: 'app',
-
-
-
-
   firebase: {
     books:bookRef
-
   },
   data(){
-  return{
-  newBook : {
-  source: '',
-  title: '',
-  author: '',
-  url:''
-  }
-  }
+    return{
+        newBook : {
+        source: '',
+        title: '',
+        author: '',
+        url:''
+      },
+      source:''
+    }
   },
   methods:{
-
   sourceChanged:function(source) {
-  this.source = source;
+    this.source = source;
+  },
+  OnSourceLoaded(source) {
+    this.source = source 
   },
 
   addBook:function(){

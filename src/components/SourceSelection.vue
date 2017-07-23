@@ -7,8 +7,8 @@
 
 <h4> Select News source</h4>
 <select class="form-control" v-on:change="sourceChanged">
+<option value="">Select News Source</option>
 <option v-bind:value="source.id" v-for ="source in sources">{{source.name}}</option>
-
 </select>
 
 	<div v-if="source">
@@ -38,7 +38,6 @@ export default {
 		for(var i=0;i<this.sources.length;i++){
 			if(this.sources[i].id ==e.target.value){
 				this.source =this.sources[i];
-
 			}
 
 		}
@@ -50,11 +49,9 @@ export default {
 
 	},
 	created: function(){
-
 		this.$http.get('https://newsapi.org/v1/sources?language=en')
 		.then(response=> {
-			this.sources=response.data.sources;
-
+			this.sources = response.data.sources;
 		});
 	}
 }
